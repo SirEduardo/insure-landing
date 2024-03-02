@@ -76,14 +76,14 @@ button{
     border: none;
 }
 .card-section{
-    margin: 10rem 9rem;
+    margin: 10rem 11rem;
 }
 .card-front{
     background-image: url(../images/bg-card-front.png); 
     background-repeat: no-repeat;
     background-size: cover;
     padding: 1.5rem;
-    max-width: 28rem;
+    max-width: 25rem;
     width: 100%;
     font-weight: 800;
     border-radius: 10px;
@@ -127,7 +127,7 @@ button{
     background-repeat: no-repeat;
     background-size: cover;
     padding: 1.5rem;
-    max-width: 28rem;
+    max-width: 25rem;
     width: 100%;
     border-radius: 10px;
     height: 14rem;
@@ -141,4 +141,29 @@ button{
     width: 100%;
     height: 100%;
    
+}
+
+.thank-you{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.thank-you img{
+    width: 75px;
+    padding-bottom: 20px;
+}
+
+.thank-you strong{
+    font-size: 40px;
+    color: var(--Verydarkviolet);
+    font-weight: 500;
+}
+.thank-you p{
+    color: var(--Darkgrayishviolet);
+    font-size: 20px;
+    font-weight: 500;
+}
+.thank-you button{
+    padding: 12px 8rem;
 }
