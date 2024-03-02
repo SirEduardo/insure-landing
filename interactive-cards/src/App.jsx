@@ -3,14 +3,44 @@ import './App.css'
 
 function App() {
 
-      
-  const [Confirm, setConfirm] = useState(false)
+  const[cardNumber, setCardNumber] = useState("0000 0000 0000 0000")
+  const[cardName, setCardName] = useState("JANE APPLESEED")
+  const[cvc, setCvc] = useState("000")
+  const[Confirm, setConfirm] = useState(false)
+  const[errors, setErrors] = useState("")
 
-  const handleButton = () =>{
-    setConfirm(!Confirm)
+  const validateInputs = () =>{
+    const newErrors = {}
+    if(cardNumber.replace(/\s/g,"").length !==16){
+     newErrors.cardNumber = "Por favor, complete los digitos";
+    }if (cardName.trim() === ''){
+      newErrors.cardName = "Can`t be blank";
+    }if (cvc.trim() === ''){
+      newErrors.cvc = "Can`t be blank";
+    }
+  setErrors(newErrors)
+  return Object.keys(newErrors).length ===0
   }
-  
-  
+  const handleButton = () =>{
+    if(validateInputs()){
+      setConfirm(true)
+    }
+  }  
+
+  const handleCardNumberChange = (e) =>{
+    const input = e.target.value.replace(/\D/g,'');
+    let formattedInput = input.match(/.{1,4}/g);
+    if(formattedInput){
+      formattedInput = formattedInput.join(' ').slice(0, 19);
+    setCardNumber(formattedInput);
+  }
+}
+  const handleCardNameChange = (e) =>{
+    setCardName(e.target.value.toUpperCase());
+  }
+  const handleCvcChange = (e) =>{
+    setCvc(e.target.value);
+  }
 
   return (
     <main className='container'>
@@ -23,14 +53,14 @@ function App() {
         <div className="white-big-dot"></div>
         <div className="white-circle"></div>
       </div>
-      <p className="card-number">0000 0000 0000 0000</p>
+      <p className="card-number">{cardNumber}</p>
       <div className="bot-inf">
-        <p className="name">JANE APPLESEED</p>
+        <p className="name">{cardName}</p>
         <p className="exp-date">00/00</p>
       </div>
     </div>
     <div className='card-back'>
-      <p className='cvc-code'>000</p>
+      <p className='cvc-code'>{cvc}</p>
     </div>
   </div>
   </aside>
@@ -39,9 +69,11 @@ function App() {
       {!Confirm ? (
       <div className='form'>
         <p>CARDHOLDER NAME</p>
-        <input type='text' className='name' placeholder='e.g.Jane Appleseed'/>
+        <input type='text' className='name' onChange={handleCardNameChange} placeholder='e.g.Jane Appleseed'/>
+        {errors.cardName && <p className='error-message' >{errors.cardName}</p>}
         <p>CARD NUMBER</p>
-        <input type='text' className='number' placeholder='e.g. 1234 5678 9123 0000'/>
+        <input type='text' className='number' onChange={handleCardNumberChange} placeholder='e.g. 1234 5678 9123 0000'/>
+        {errors.cardNumber && <p className='error-message' >{errors.cardNumber}</p>}
         <div className='div-form'>
           <div className='exp-date'>
           <p>EXP.DATE (MM/YY)</p>
@@ -50,17 +82,18 @@ function App() {
           </div>
           <div className='cvc-container'>
           <p>CVC</p>
-          <input type='text' className='cvc' placeholder='e.g.123'/>
+          <input type='text' className='cvc' onChange={handleCvcChange} placeholder='e.g.123'/>
+          {errors.cvc && <p className='error-message' >{errors.cvc}</p>}
           </div>
         </div>
-      <button onClick={handleButton}>Confirm</button>
+      <button onClick={handleButton} >Confirm</button>
       </div>
       ):(
         <div className="thank-you">
         <img src="../images/icon-complete.svg" alt="Complete icon" key="complete-icon"/>
         <strong>THANK YOU!</strong>
         <p>We`ve added your card details</p>
-        <button onClick={handleButton}>Continue</button>
+        <button onClick={() => setConfirm(false)}>Continue</button>
         </div>
       )}
     </div>
