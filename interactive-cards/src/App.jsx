@@ -54,25 +54,30 @@ function App() {
     if(formattedInput){
       formattedInput = formattedInput.join(' ').slice(0, 19);
     setCardNumber(formattedInput);
+    setErrors((prevErrors) => ({ ...prevErrors, cardNumber: '' }));
   }
 }
   const handleCardNameChange = (e) =>{
     setCardName(e.target.value.toUpperCase());
+    setErrors((prevErrors) => ({ ...prevErrors, cardName: '' }));
   }
   const handleMonthChange = (e) =>{
     const inputVal = (e.target.value)
     const limitedVal = inputVal.slice(0,2)
     setCardMonth(limitedVal)
+    setErrors((prevErrors) => ({ ...prevErrors, cardMonth: '' }));
   };
   const handleYearChange = (e) =>{
     const inputVal = (e.target.value);
     const limitedVal = inputVal.slice(0,2);
     setCardYear(limitedVal)
+    setErrors((prevErrors) => ({ ...prevErrors, cardYear: '' }));
   };
   const handleCvcChange = (e) =>{
     const inputVal = (e.target.value);
     const limitedVal = inputVal.slice(0,3)
     setCvc(limitedVal)
+    setErrors((prevErrors) => ({ ...prevErrors, cvc: '' }));
   }
 
   return (

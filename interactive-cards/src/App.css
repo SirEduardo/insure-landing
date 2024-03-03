@@ -35,6 +35,9 @@ p{
     font-weight: 600;
     letter-spacing: 1px;
 }
+::placeholder{
+    opacity: 0.5;
+}
 .name,
 .number{
     width: 22rem;
