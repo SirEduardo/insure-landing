@@ -3,27 +3,48 @@ import './App.css'
 
 function App() {
 
-  const[cardNumber, setCardNumber] = useState("0000 0000 0000 0000")
-  const[cardName, setCardName] = useState("JANE APPLESEED")
-  const[cvc, setCvc] = useState("000")
+  const[cardNumber, setCardNumber] = useState("")
+  const[cardName, setCardName] = useState("")
+  const[cardMonth, setCardMonth] = useState ("")
+  const[cardYear, setCardYear] = useState('')
+  const[cvc, setCvc] = useState("")
   const[Confirm, setConfirm] = useState(false)
-  const[errors, setErrors] = useState("")
+  const[errors, setErrors] = useState({})
 
   const validateInputs = () =>{
     const newErrors = {}
+    if (!cardName.trim()){
+      newErrors.cardName = "Name cannot be blank";
+    }
+    
     if(cardNumber.replace(/\s/g,"").length !==16){
-     newErrors.cardNumber = "Por favor, complete los digitos";
-    }if (cardName.trim() === ''){
-      newErrors.cardName = "Can`t be blank";
-    }if (cvc.trim() === ''){
+      newErrors.cardNumber = "Please complete the digits";
+    }
+    
+    if(!cardMonth.trim()){
+      newErrors.cardMonth = 'Can`t be blank';
+    }
+    
+    if(!cardYear.trim()){
+      newErrors.cardYear = "Can`t be blank"
+    }
+    
+    if(!cvc.trim()){
       newErrors.cvc = "Can`t be blank";
     }
+
   setErrors(newErrors)
   return Object.keys(newErrors).length ===0
   }
+
   const handleButton = () =>{
     if(validateInputs()){
       setConfirm(true)
+      setCardName('')
+      setCardNumber('')
+      setCardMonth('')
+      setCardYear('')
+      setCvc('')
     }
   }  
 
@@ -38,8 +59,20 @@ function App() {
   const handleCardNameChange = (e) =>{
     setCardName(e.target.value.toUpperCase());
   }
+  const handleMonthChange = (e) =>{
+    const inputVal = (e.target.value)
+    const limitedVal = inputVal.slice(0,2)
+    setCardMonth(limitedVal)
+  };
+  const handleYearChange = (e) =>{
+    const inputVal = (e.target.value);
+    const limitedVal = inputVal.slice(0,2);
+    setCardYear(limitedVal)
+  };
   const handleCvcChange = (e) =>{
-    setCvc(e.target.value);
+    const inputVal = (e.target.value);
+    const limitedVal = inputVal.slice(0,3)
+    setCvc(limitedVal)
   }
 
   return (
@@ -53,14 +86,14 @@ function App() {
         <div className="white-big-dot"></div>
         <div className="white-circle"></div>
       </div>
-      <p className="card-number">{cardNumber}</p>
+      <p className="card-number">{cardNumber || '0000 0000 0000 0000'}</p>
       <div className="bot-inf">
-        <p className="name">{cardName}</p>
-        <p className="exp-date">00/00</p>
+        <p className="name">{cardName || ' JANE APPLESEED'}</p>
+        <p className="exp-date">{cardMonth || '00'}/{cardYear || '00'}</p>
       </div>
     </div>
     <div className='card-back'>
-      <p className='cvc-code'>{cvc}</p>
+      <p className='cvc-code'>{cvc || '000'}</p>
     </div>
   </div>
   </aside>
@@ -69,20 +102,21 @@ function App() {
       {!Confirm ? (
       <div className='form'>
         <p>CARDHOLDER NAME</p>
-        <input type='text' className='name' onChange={handleCardNameChange} placeholder='e.g.Jane Appleseed'/>
+        <input type='text' className='name' value={cardName} onChange={handleCardNameChange} placeholder='Jane Appleseed' required/>
         {errors.cardName && <p className='error-message' >{errors.cardName}</p>}
         <p>CARD NUMBER</p>
-        <input type='text' className='number' onChange={handleCardNumberChange} placeholder='e.g. 1234 5678 9123 0000'/>
+        <input type='text' className='number' value={cardNumber} onChange={handleCardNumberChange} placeholder=' 1234 5678 9123 0000' required/>
         {errors.cardNumber && <p className='error-message' >{errors.cardNumber}</p>}
         <div className='div-form'>
           <div className='exp-date'>
           <p>EXP.DATE (MM/YY)</p>
-          <input type='text' className='month' placeholder='MM'/>
-          <input type='text' className='year' placeholder='YY'/>
+          <input type='text' className='month' value={cardMonth} min={'01'} max={'12'}  onChange={handleMonthChange} placeholder='MM' required/>
+          <input type='text' className='year' value={cardYear} min={'00'} max={'99'} onChange={handleYearChange} placeholder='YY' required/>
+          {errors.cardMonth && <p className='error-message'>{errors.cardMonth}</p>}
           </div>
           <div className='cvc-container'>
           <p>CVC</p>
-          <input type='text' className='cvc' onChange={handleCvcChange} placeholder='e.g.123'/>
+          <input type='text' className='cvc' value={cvc} onChange={handleCvcChange} placeholder='123' required/>
           {errors.cvc && <p className='error-message' >{errors.cvc}</p>}
           </div>
         </div>
